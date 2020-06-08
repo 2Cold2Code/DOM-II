@@ -34,9 +34,6 @@ context("testing visibility of the header", () => {
         .trigger('mouseover')
         
   })
-  it('grabs the home anchor', ()=> {
-    cy.contains('Home')
-  })
   it('clicks the Home anchor', ()=> {
     cy.contains('Home')
       .trigger('click')

@@ -36,7 +36,7 @@ clickError.textContent = 'Sorry, click did not a trigger';
 const pars = document.querySelectorAll('p');
 Array.from(pars).forEach(
     par => {
-        par.addEventListener('click', (e) =>
+        par.addEventListener('dblClick', (e) =>
         {const keyTern = (e.key === 'r')  
             ? gsap.from(
               par, {color: 'red'}
@@ -119,10 +119,18 @@ const anchors = document.querySelectorAll('.nav-link')
 anchors.forEach(a => {
     console.log(a)
     Object.assign(a.style, navStyle)
-    header.addEventListener('mouseover', (e) => {
-        Object.assign(e.target.style.color, colorRand())        
-    })
+    window.addEventListener('keyup', () => {
+        e.stopPropagation();
+        anchor.style.transform = 'scale(1.5)';
+        anchor.style.backgroundColor = 'white';
+        anchor.style.color = '#212529';
+    });
 })
+
+header.addEventListener('mouseover', (e) => {
+    Object.assign(e.target.style.color, colorRand())        
+})
+
 header.addEventListener('contextmenu', 
    (e) => 
    {
@@ -132,3 +140,78 @@ header.addEventListener('contextmenu',
        )
     }
 )
+const input = document.createElement('input');
+input.setAttribute('name', 'input');
+input.setAttribute('type', 'radio');
+input.setAttribute('placeholder', 'Double click to back out');
+
+const introImg = document.querySelector('.intro img');
+
+function affectIntroImg(){
+    introImg.style.transform = 'scale(.25)';
+}
+
+const text = document.createElement('input');
+text.setAttribute('name', 'inputText');
+text.setAttribute('type', 'textarea');
+text.style.height = '8rem';
+text.style.backgroundColor = 'lavender';
+text.setAttribute('placeholder', 'Enter a number, then press enter');
+const height = text.style['height']
+
+const textStyle = {
+    backgroundColor: 'red',
+    height: `${height / 2}`,
+    width: `${height * 2}`,
+    backgroundColor: 'blue'
+}
+
+Object.assign(text.style, textStyle)
+
+const inputText = document.createElement('form');
+inputText.setAttribute('submit', '{() => onEnter()}')
+inputText.appendChild(input);
+
+header.prepend(text);
+header.prepend(inputText);
+
+input.addEventListener('keydown', e => {
+    e.stopPropagation();
+    header.style.backgroundColor = colorRand();
+    header.style.color = 'white';
+})
+
+function onEnter(e){
+    let element = document.createElement('p');
+    element.textContent = input[e.target.value]
+    e.target.appendChild(element)
+}
+
+input.addEventListener('keyup', e => {
+    e.stopPropagation();
+    e.key === 'enter' 
+      ? (onEnter(e) && (header.style.backgroundColor = 'white') && (header.style.color = '#212529')) 
+    : ((header.style.backgroundColor = 'white') && (header.style.color = '#212529')) 
+})
+
+text.addEventListener('drag', () => {
+    
+    rotation(welcome, '25', '5')
+});
+
+const height = ['style']['height'];
+
+const pars = document.querySelectorAll('p');
+function zoomPar(e){
+    e.preventDefault();
+    scale += e.deltaY * -0.01;
+    scale = Math.min(Math.max(.0625, scale), 8);
+    e.target.style.transform = `scale(${scale})`;
+}
+
+let scale = 1;
+
+pars.forEach(par => par.addEventListener('wheel', e => zoomPar(e)));
+
+// some features do not work as expected but can't add, commit or push for some reason...
+// Is not recognizing the changes...
